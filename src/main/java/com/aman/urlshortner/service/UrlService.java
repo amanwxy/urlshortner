@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +28,17 @@ public class UrlService {
     private final UrlRepository urlRepository;
     private final CacheService cacheService;
     private final Base62Encoder base62Encoder;
+    private final String baseUrl;
 
-    public UrlService(UrlRepository urlRepository, CacheService cacheService, Base62Encoder base62Encoder) {
+    public UrlService(
+            UrlRepository urlRepository,
+            CacheService cacheService,
+            Base62Encoder base62Encoder,
+            @Value("${app.base-url}") String baseUrl) {
         this.urlRepository = urlRepository;
         this.cacheService = cacheService;
         this.base62Encoder = base62Encoder;
+        this.baseUrl = baseUrl.endsWith("/") ? baseUrl.substring(0, baseUrl.length() - 1) : baseUrl;
     }
 
     public ShortenResponse shortenUrl(CreateUrlDto dto) {
@@ -43,7 +50,7 @@ public class UrlService {
             UrlEntity saved = urlRepository.save(entity);
             cacheService.set("url:" + saved.getShortCode(), saved.getOriginalUrl(), Duration.ofMinutes(10));
             log.info("Cached new short URL mapping for shortCode={} -> {}", saved.getShortCode(), saved.getOriginalUrl());
-            return new ShortenResponse("http://localhost:8080/" + saved.getShortCode(), saved.getShortCode(), 0, saved.getCreatedAt().toString());
+            return new ShortenResponse(baseUrl + "/" + saved.getShortCode(), saved.getShortCode(), 0, saved.getCreatedAt().toString());
         } catch (DataIntegrityViolationException ex) {
             throw new DuplicateResourceException("Short code already exists");
         }

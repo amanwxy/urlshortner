@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,8 +28,12 @@ class UrlServiceTest {
     @Mock
     private Base62Encoder base62Encoder;
 
-    @InjectMocks
     private UrlService urlService;
+
+    @BeforeEach
+    void setUp() {
+        urlService = new UrlService(urlRepository, cacheService, base62Encoder, "http://localhost:8080");
+    }
 
     @Test
     void shouldThrowDuplicateResourceWhenUniqueConstraintIsViolated() {
