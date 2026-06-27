@@ -79,8 +79,20 @@ curl -X POST http://localhost:8080/shorten \
 ```
 
 ## Testing
+
+See **[TEST_INSTRUCTIONS.md](TEST_INSTRUCTIONS.md)** for step-by-step testing with sample curl commands (local and deployed).
+
+Quick automated test run:
+
 ```bash
 ./mvnw test
+```
+
+Smoke test on deployed droplet:
+
+```bash
+export BASE_URL=http://168.144.149.214:8080
+bash scripts/smoke-test.sh
 ```
 
 ## CI/CD

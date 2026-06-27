@@ -511,6 +511,10 @@ com.aman.urlshortner
 
 ## 10. Testing Strategy
 
+See **[TEST_INSTRUCTIONS.md](TEST_INSTRUCTIONS.md)** for step-by-step testing and sample curl commands.
+
+Extended details: [TESTING.md](TESTING.md)
+
 ### 10.1 Unit Tests
 
 | Test class | Scope | Coverage |
@@ -534,7 +538,7 @@ com.aman.urlshortner
 ./mvnw test
 ```
 
-Tests use **H2 in-memory** database by default. Redis failures are swallowed by `CacheService`, so tests pass without a running Redis instance.
+Full details: [TEST_INSTRUCTIONS.md](TEST_INSTRUCTIONS.md) · [TESTING.md](TESTING.md)
 
 ---
 
@@ -698,6 +702,8 @@ Configuration files:
 
 ## 15. References
 
-- [README.md](README.md) — setup, API examples, and testing commands
+- [TEST_INSTRUCTIONS.md](TEST_INSTRUCTIONS.md) — step-by-step testing with sample curl commands
+- [TESTING.md](TESTING.md) — extended testing guide
+- [README.md](README.md) — setup and API examples
 - [DESIGN.md](DESIGN.md) — original design notes
 - [`.github/workflows/ci.yml`](.github/workflows/ci.yml) — CI pipeline definition
